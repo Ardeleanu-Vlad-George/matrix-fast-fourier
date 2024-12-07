@@ -3,17 +3,22 @@
 #include "io.h"
 #include "fft_comp.h"
 #include "fft_prep_bit.h"
+#include "fft_prep_cpx.h"
 
 
 int main(){
-  double **mtr;
+  double **mtrx;
+  double *ruts;
   int size, powr;
-  mtr = read("data/in", &size);
+  mtrx = read("data/in", &size);
+  ruts = every_rou(size);
   powr = getexp(size);
-  fft_order(size, powr, *mtr);
-  write("./data/out", size, mtr);
+  fft_order(size, powr, *mtrx);
+  fft_apply(size, powr, *mtrx, ruts);
+  write("./data/out", size, mtrx);
 
-  free(*mtr);
-  free(mtr);
+  free(ruts);
+  free(*mtrx);
+  free(mtrx);
   return 0;
 }
