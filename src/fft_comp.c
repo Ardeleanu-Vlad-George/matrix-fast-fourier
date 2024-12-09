@@ -56,7 +56,7 @@ void pair_butterfly(double *oonn, double *neun, double *oonn_coef, double *neun_
 }
 
 void fft_butterfly(int type, int nmbr, double *pair, int lenf, double *ruts, int step){
-  double  *oonn_seqn = pair, *neun_seqn = pair+2*lenf, 
+  double  *oonn_seqn = pair, *neun_seqn = pair+2*lenf*(type?nmbr:1), 
           *oonn_ruts = ruts, *neun_ruts = ruts+2*lenf*step;
   
   comp_seqn(lenf, oonn_seqn, type?nmbr:1, neun_seqn, type?nmbr:1, oonn_ruts, step, neun_ruts, step);
@@ -65,14 +65,14 @@ void fft_butterfly(int type, int nmbr, double *pair, int lenf, double *ruts, int
 void fft_apply_one(int type, int nr, int pwr, double *vct, double *rts){
   //0 - means line, 1 - means column
   double *seqn_pair, *vect_stop;
-  vect_stop = vct+2*nr;
+  vect_stop = vct+2*nr*(type?nr:1);
   int seqn_lenf, layer_cnt, powr_step; 
 
   for(
     layer_cnt=0, seqn_lenf=1, powr_step=nr/2;
     layer_cnt < pwr;
     layer_cnt++, seqn_lenf*=2, powr_step/=2
-  )for(seqn_pair=vct; seqn_pair < vect_stop; seqn_pair+=4*seqn_lenf)
+  )for(seqn_pair=vct; seqn_pair < vect_stop; seqn_pair+=4*seqn_lenf*(type?nr:1))
     fft_butterfly(type, nr, seqn_pair, seqn_lenf, rts, powr_step);
 }
 
