@@ -13,9 +13,9 @@ int main(){
   mtrx = read("data/in", &size);
   ruts = every_rou(size);
   powr = getexp(size);
-  fft_order(size, powr, *mtrx);
-  fft_apply(size, powr, *mtrx, ruts);
-  write("./data/out", size, mtrx);
+  // fft_order_all(size, powr, mtrx);
+  // fft_apply_all(size, powr, mtrx, ruts);
+  write("data/out", size, mtrx);
 
   free(ruts);
   free(*mtrx);
