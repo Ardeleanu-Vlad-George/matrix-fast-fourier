@@ -25,35 +25,6 @@ void fft_order(int nr, int pwr, double *vct){
   for(iter=0; iter < nr; iter++)
     fft_order_one(1, nr, pwr, vct+2*iter);
 }
-/**
- * Consider the next equations making up the butterfly schema:
- * a <- a+b*x
- * b <- a+b*y
- * The 'a' term doesn't have it's own coeficients, it is uniform.
- * The 'b' term does have them so let's call ne-uniform.
- * The two equations have similar names based on the variable to which
- * they are assigned, the coeficients have similar names
- * In order to have notations easy to align, this program uses
- * 'oonn' for 'UNiform' and 'neun' for 'ne-uniform'
-*/
-
-void pair_butterfly(double *oonn, double *neun, double *oonn_coef, double *neun_coef){
-  //first two belong to the even number, second two to the uneven one
-  //last two to the term obtained by multiplying the uneven number 
-  double cache[6];
-  asn(cache   , oonn);
-  asn(cache+2 , neun);
-  add(
-    oonn, cache, tms(
-      cache+4, cache+2, oonn_coef
-    )
-  );
-  add(
-    neun, cache, tms(
-      cache+4, cache+2, neun_coef
-    )
-  );
-}
 
 void fft_butterfly(int type, int nmbr, double *pair, int lenf, double *ruts, int step){
   double  *oonn_seqn = pair, *neun_seqn = pair+2*lenf*(type?nmbr:1), 
