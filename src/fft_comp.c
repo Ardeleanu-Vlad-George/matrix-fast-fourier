@@ -26,13 +26,6 @@ void fft_order(int nr, int pwr, double *vct){
     fft_order_one(1, nr, pwr, vct+2*iter);
 }
 
-void fft_butterfly(int type, int nmbr, double *pair, int lenf, double *ruts, int step){
-  double  *oonn_seqn = pair, *neun_seqn = pair+2*lenf*(type?nmbr:1), 
-          *oonn_ruts = ruts, *neun_ruts = ruts+2*lenf*step;
-  
-  comp_seqn(lenf, oonn_seqn, type?nmbr:1, neun_seqn, type?nmbr:1, oonn_ruts, step, neun_ruts, step);
-}
-
 void fft_apply_one(int type, int nr, int pwr, double *vct, double *rts){
   //0 - means line, 1 - means column
   double *seqn_pair, *vect_stop;
@@ -44,7 +37,13 @@ void fft_apply_one(int type, int nr, int pwr, double *vct, double *rts){
     layer_cnt < pwr;
     layer_cnt++, seqn_lenf*=2, powr_step/=2
   )for(seqn_pair=vct; seqn_pair < vect_stop; seqn_pair+=4*seqn_lenf*(type?nr:1))
-    fft_butterfly(type, nr, seqn_pair, seqn_lenf, rts, powr_step);
+    comp_seqn(
+      seqn_lenf,
+      seqn_pair,                          type?nr:1,
+      seqn_pair+2*seqn_lenf*(type?nr:1),  type?nr:1,
+      rts,                                powr_step,
+      rts+2*seqn_lenf*powr_step,          powr_step
+    );
 }
 
 void fft_apply(int nr, int pwr, double *vct, double *rts){
