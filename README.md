@@ -29,4 +29,4 @@ DiscreteLimit[
 0 | -1)]
 ```
 The examples are according to WolframAlpha.
-This is how the example will be introduced: discrete fourier of [[1, 2], [2, 1]]
+This is how the example will be introduced into WolframAlpha: discrete fourier of [[1, 2], [2, 1]]
